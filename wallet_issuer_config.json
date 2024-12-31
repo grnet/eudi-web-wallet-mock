@@ -1,5 +1,5 @@
 {
-	"client_id": "mock-wallet<->issuer",
+	"client_id": "eudiw_login",
 	"auth_endpoint_debug": false,
 	"certificate_private_key_file": "data/ec_private_key.pem",
 	"certificate_file": "data/mock_wallet_cert.pem",
