@@ -193,7 +193,6 @@ def auth_request(
         "Accept-Charset": "UTF-8",
         "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
     }
-    scope = scope
     client_id = config["client_id"]
     redirect_uri = wallet_auth_endpoint
 
