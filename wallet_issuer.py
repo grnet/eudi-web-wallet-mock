@@ -41,6 +41,21 @@ app = Flask(__name__)
 DEFAULT_ISSUER="https://83.212.72.114:5000"
 # DEFAULT_ISSUER="https://snf-895798.vm.okeanos.grnet.gr:5000"
 
+CONFIGURATIONS = {
+    "pid_mdoc": {
+        "credential_offer_file": "data/credential_offer_pid_mdoc.json",
+        "credential_data_file": "data/credential_data_pid.json"
+    },
+    "pid_sd_jwt": {
+        "credential_offer_file": "data/credential_offer_pid_sd_jwt.json",
+        "credential_data_file": "data/credential_data_pid.json"
+    },
+    "mdl_mdoc": {
+        "credential_offer_file": "data/credential_offer_mdl_mdoc.json",
+        "credential_data_file": "data/credential_data_mdl.json"
+    },
+}
+
 def start_wallet_auth_endpoint(auth_endpoint: str) -> None:
     global p
     print(f"Starting authentication endpoint: {auth_endpoint}")
@@ -541,6 +556,12 @@ if __name__ == "__main__":
         help="The URL of the registration endpoint",
         default=f"{DEFAULT_ISSUER}/registration",
     )
+    parser.add_argument(
+        "--configuration",
+        help="Credential configuration",
+        choices=CONFIGURATIONS.keys(),
+        default="pid_mdoc",
+    )
     args = parser.parse_args()
     verbose = args.verbose
 
@@ -556,6 +577,8 @@ if __name__ == "__main__":
 
     config["issuer_url"] = args.issuer_url
     config["registration_endpoint"] = args.registration_endpoint
+    logger.info(f"Using credential configuration: {args.configuration}")
+    config.update(CONFIGURATIONS[args.configuration])
 
     logger.info("Start wallet auth endpoint in separate process.")
     start_wallet_auth_endpoint(args.wallet_auth_endpoint)

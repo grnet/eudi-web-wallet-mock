@@ -2,7 +2,5 @@
 	"client_id": "mock-wallet<->issuer",
 	"auth_endpoint_debug": false,
 	"certificate_private_key_file": "data/ec_private_key.pem",
-	"certificate_file": "data/mock_wallet_cert.pem",
-	"credential_offer_file": "data/credential_offer_mdl_mdoc.json",
-	"credential_data_file": "data/credential_data_mdl.json"
+	"certificate_file": "data/mock_wallet_cert.pem"
 }
