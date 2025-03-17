@@ -527,9 +527,9 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument(
-        "--credential-output",
-        help="Output file for credential",
-        default="credential.out",
+        "--credential-output-prefix",
+        help="Prefix of output file for credential",
+        default="credential",
     )
     parser.add_argument(
         "--verbose",
@@ -630,8 +630,9 @@ if __name__ == "__main__":
         logger.info("Received credential")
         logger.info(f"{pprint.pprint(credential)}")
 
-        with open(args.credential_output, "w") as f:
+        output_filename = f"{args.credential_output_prefix}-{credential_configuration_id}.out"
+        with open(output_filename, "w") as f:
             f.write(credential["credential"])
-        logger.info(f"Credential written to {args.credential_output}")
+        logger.info(f"Credential written to {output_filename}")
 
     stop_wallet_auth_endpoint()
