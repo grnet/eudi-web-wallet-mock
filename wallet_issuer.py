@@ -214,6 +214,8 @@ def auth_request(
         "state": state,
         "redirect_uri": redirect_uri,
     }
+    if verbose:
+        print(f"Calling pushed authorization endpoint: {auth_endpoint}")
     r = s.post(
         pushed_auth_endpoint,
         data=params,
@@ -236,12 +238,16 @@ def auth_request(
         "state": state,
         "request_uri": request_uri,
     }
+    if verbose:
+        print(f"Calling authorization endpoint: {auth_endpoint}")
     r = s.get(auth_endpoint, params=params, verify=ssl_verify)
     if r.status_code != requests.codes.ok:  # 200
         if verbose:
             logger.info(r.json())
         logger.error(f"Authorization failed ({r.status_code}). Exit.")
         wallet_exit()
+    elif verbose:
+        print("Authorization response:", r.content)
 
     return s, code_verifier
 
@@ -565,11 +571,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     verbose = args.verbose
 
-    logger.info("OIDC4VC draft 14, 1 October 2024")
-    logger.info(
-        "https://openid.github.io/OpenID4VCI/"
-        "openid-4-verifiable-credential-issuance-wg-draft.html"
-    )
+    logger.info("OIDC4VC draft 15, 19 December 2024")
 
     # Load wallet config
     with open("wallet_issuer_config.json") as f:
@@ -593,7 +595,7 @@ if __name__ == "__main__":
     # Credential offer: Diagram step 1b, document section 4
     state, credential_configuration_ids = get_credential_offer()
 
-    # Issuer metadata: Diagram step 2, document section 10.2
+    # Issuer metadata: Diagram step 2, document section 11.2
     (
         pushed_auth_endpoint,
         auth_endpoint,
@@ -615,6 +617,7 @@ if __name__ == "__main__":
         session, code_verifier = auth_request(
             pushed_auth_endpoint, auth_endpoint, args.wallet_auth_endpoint, state, scope
         )
+        # Authorization: Diagram step 4, document section 5
         auth_params = fill_in_ui_forms(session, credential_configuration_id)
 
         # Token: Diagram step 5, document section 6
@@ -622,7 +625,7 @@ if __name__ == "__main__":
             token_endpoint, args.wallet_auth_endpoint, session, auth_params, code_verifier
         )
 
-        # Credential: Diagram step 6, document section 7
+        # Credential: Diagram step 6, document section 8
         credential = request_credential(
             credential_endpoint, session, token, token_type, docformat, doctype
         )
