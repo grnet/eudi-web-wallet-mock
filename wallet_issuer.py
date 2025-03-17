@@ -146,15 +146,16 @@ def retrieve_issuer_metadata(
     logger.info(f"Issuer metadata keys: {issuer_metadata.keys()}")
     # logger.debug(f'{pprint.pprint(issuer_metadata)}')
 
+    auth_server = config["authentication_server"]
     r = requests.get(
-        f"{issuer_url}/.well-known/openid-configuration", verify=ssl_verify
+        f"{auth_server}/.well-known/openid-configuration", verify=ssl_verify
     )
     if r.status_code != requests.codes.ok:  # 200
         logger.error(f"Issuer config failed ({r.status_code}). Exit.")
         wallet_exit()
-    issuer_config = r.json()
-    logger.info(f"Issuer openid config keys: {issuer_config.keys()}")
-    # logger.debug(f'{pprint.pprint(issuer_config)}')
+    auth_server_config = r.json()
+    logger.info(f"Authentication server OpenID config keys: {auth_server_config.keys()}")
+    # logger.debug(f'{pprint.pprint(auth_server_config)}')
 
     supported_cred_configs = issuer_metadata[
         "credential_configurations_supported"
@@ -170,12 +171,12 @@ def retrieve_issuer_metadata(
     ]
     logger.info(f"cred_configs: {cred_configs}")
     if verbose:
-        logger.info(f"issuer_config: {issuer_config}")
+        logger.info(f"auth_server_config: {auth_server_config}")
 
     return (
-        issuer_config["pushed_authorization_request_endpoint"],
-        issuer_config["authorization_endpoint"],
-        issuer_config["token_endpoint"],
+        auth_server_config["pushed_authorization_request_endpoint"],
+        auth_server_config["authorization_endpoint"],
+        auth_server_config["token_endpoint"],
         issuer_metadata["credential_endpoint"],
         cred_configs,
     )
@@ -547,6 +548,10 @@ if __name__ == "__main__":
         default=DEFAULT_ISSUER,
     )
     parser.add_argument(
+        "--authentication-server",
+        help="The hostname of the authentication server, defaults to the issuer",
+    )
+    parser.add_argument(
         "--registration-endpoint",
         help="The URL of the registration endpoint",
         default=f"{DEFAULT_ISSUER}/registration",
@@ -571,6 +576,10 @@ if __name__ == "__main__":
         config = json.load(f)
 
     config["issuer_url"] = args.issuer_url
+    if args.authentication_server:
+        config["authentication_server"] = args.authentication_server
+    else:
+        config["authentication_server"] = config["issuer_url"]
     config["registration_endpoint"] = args.registration_endpoint
     logger.info(f"Using credential configuration: {args.configuration}")
     config.update(config["credential_configurations"][args.configuration])
