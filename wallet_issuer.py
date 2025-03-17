@@ -41,21 +41,6 @@ app = Flask(__name__)
 DEFAULT_ISSUER="https://83.212.72.114:5000"
 # DEFAULT_ISSUER="https://snf-895798.vm.okeanos.grnet.gr:5000"
 
-CONFIGURATIONS = {
-    "pid_mdoc": {
-        "credential_offer_file": "data/credential_offer_pid_mdoc.json",
-        "credential_data_file": "data/credential_data_pid.json"
-    },
-    "pid_sd_jwt": {
-        "credential_offer_file": "data/credential_offer_pid_sd_jwt.json",
-        "credential_data_file": "data/credential_data_pid.json"
-    },
-    "mdl_mdoc": {
-        "credential_offer_file": "data/credential_offer_mdl_mdoc.json",
-        "credential_data_file": "data/credential_data_mdl.json"
-    },
-}
-
 def start_wallet_auth_endpoint(auth_endpoint: str) -> None:
     global p
     print(f"Starting authentication endpoint: {auth_endpoint}")
@@ -522,6 +507,16 @@ def wallet_exit() -> None:
     exit(1)
 
 
+def get_available_configurations():
+    try:
+        with open("wallet_issuer_config.json", "r") as f:
+            config = json.load(f)
+        if "credential_configurations" in config:
+            return config["credential_configurations"].keys()
+    except FileNotFoundError:
+        pass
+    return []
+
 if __name__ == "__main__":
     try:
         with open(".config.ip") as local_ip_file:
@@ -559,7 +554,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--configuration",
         help="Credential configuration",
-        choices=CONFIGURATIONS.keys(),
+        choices=get_available_configurations(),
         default="pid_mdoc",
     )
     args = parser.parse_args()
@@ -578,7 +573,7 @@ if __name__ == "__main__":
     config["issuer_url"] = args.issuer_url
     config["registration_endpoint"] = args.registration_endpoint
     logger.info(f"Using credential configuration: {args.configuration}")
-    config.update(CONFIGURATIONS[args.configuration])
+    config.update(config["credential_configurations"][args.configuration])
 
     logger.info("Start wallet auth endpoint in separate process.")
     start_wallet_auth_endpoint(args.wallet_auth_endpoint)

@@ -37,30 +37,25 @@ python wallet_issuer.py
 
 ## Types of credentials supported
 
-### PID in mdoc format
-
-Check `data/credential_offer_pid_mdoc.json` and `data/credential_data_pid.json`.
-Set these files in `wallet_issuer_config.json` as follows.
+Supported credential configurations are defined in configuration file `wallet_issuer_config.json`:
 
 ```json
-        "credential_offer_file": "data/credential_offer_pid_mdoc.json",
-        "credential_data_file": "data/credential_data_pid.json"
+"credential_configurations": {
+  "<configuration name>": {
+    "credential_offer_file": "<credential offer>",
+    "credential_data_file": "<credential data to use to fill in interactive UI form>"
+  },
+  ...
+}
 ```
 
-### mDL in mdoc format
+Currently, the following credential configurations are supported (and can be selected with the `--configuration` command-line parameter):
 
-Check `data/credential_offer_mdl_mdoc.json` and `data/credential_data_mdl.json`.
-Set these files in `wallet_issuer_config.json` as follows.
-
-```json
-        "credential_offer_file": "data/credential_offer_mdl_mdoc.json",
-        "credential_data_file": "data/credential_data_mdl.json"
-```
-
-Note that the issuer does not support the loading of an image for an mDL, which is provided in the `portrait` field.
-Instead it only accepts the symbolic values "Port1" and "Port2", which correspond to sample image files stored internally in the issuer in base64 JPEG format.
-
-For an example of an image in base64 JPEG format see `data/credential_data_mdl_image.json`.
+| Credential configuration | Description | Notes |
+| ------------------------ | ----------- | ----- |
+| `pid_mdoc`               | PID in mdoc format  | |
+| `pid_sd_jwt`             | PID in SD-JWT-VC format | |
+| `mdl_mdoc`               | mDL in mdoc format | The issuer does not support the loading of an image for an mDL, which is provided in the `portrait` field. Instead it only accepts the symbolic values "Port1" and "Port2", which correspond to sample image files stored internally in the issuer in base64 JPEG format. For an example of an image in base64 JPEG format see `data/credential_data_mdl_image.json`. |
 
 ## Wallet registration with issuer/wallet provider
 

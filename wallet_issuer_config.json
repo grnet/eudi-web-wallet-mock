@@ -2,5 +2,19 @@
 	"client_id": "mock-wallet<->issuer",
 	"auth_endpoint_debug": false,
 	"certificate_private_key_file": "data/ec_private_key.pem",
-	"certificate_file": "data/mock_wallet_cert.pem"
+	"certificate_file": "data/mock_wallet_cert.pem",
+	"credential_configurations": {
+		"pid_mdoc": {
+			"credential_offer_file": "data/credential_offer_pid_mdoc.json",
+			"credential_data_file": "data/credential_data_pid.json"
+		},
+		"pid_sd_jwt": {
+			"credential_offer_file": "data/credential_offer_pid_sd_jwt.json",
+			"credential_data_file": "data/credential_data_pid.json"
+		},
+		"mdl_mdoc": {
+			"credential_offer_file": "data/credential_offer_mdl_mdoc.json",
+			"credential_data_file": "data/credential_data_mdl.json"
+		}
+	}
 }
