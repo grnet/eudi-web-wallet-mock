@@ -15,6 +15,10 @@
 		"mdl_mdoc": {
 			"credential_offer_file": "data/credential_offer_mdl_mdoc.json",
 			"credential_data_file": "data/credential_data_mdl.json"
+		},
+		"educational_id_mdoc": {
+			"credential_offer_file": "data/credential_offer_educational_id_mdoc.json",
+			"credential_data_file": "data/credential_data_educational_id.json"
 		}
 	}
 }
