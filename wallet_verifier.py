@@ -243,12 +243,36 @@ if __name__ == "__main__":
         help="Wallet metadata endpoint to start",
         default=f"https://{default_wallet_ip}:7000/wallet_metadata",
     )
+    parser.add_argument("--verifier-url",
+        type=str,
+        help="Verifier URL to connect to",
+        default="http://83.212.99.99:8080",
+    )
+    parser.add_argument(
+        "--auth-request-file",
+        type=str,
+        default="data/auth_request_mdoc_mdl.json",
+    )
+    parser.add_argument(
+        "--client-id",
+        type=str,
+        default="mock-wallet<->verifier",
+    )
+    parser.add_argument(
+        "--wallet-response-file",
+        type=str,
+        default="data/wallet_response.json",
+    )
 
     with open("wallet_verifier_config.json") as f:
         config = json.load(f)
 
     args = parser.parse_args()
+    config["auth_request_file"] = args.auth_request_file
+    config["client_id"] = args.client_id
     config["metadata_endpoint"] = args.wallet_metadata_endpoint
+    config["verifier_url"] = args.verifier_url
+    config["wallet_response_file"] = args.wallet_response_file
 
     logger.info(
         f"Verifier URL: {config['verifier_url']}\n"
