@@ -1,13 +1,9 @@
 {
-	"client_id": "mock-wallet<->verifier",
-	"verifier_url": "http://83.212.99.99:8080",
 	"ssl_verify": false,
 	"certificate_private_key_file": "data/ec_private_key.pem",
 	"certificate_file": "data/mock_wallet_cert.pem",
 	"vp_token_valid": true,
 	"want_new_revocation_data": false,
-	"auth_request_file": "data/auth_request_mdoc_mdl.json",
-	"wallet_response_file": "data/wallet_response.json",
 	"mdoc_status_list_valid_file": "data/mdoc_kotlin_status_list_valid.cbor",
 	"mdoc_status_list_revoked_file": "data/mdoc_kotlin_status_list_revoked.cbor"
 }

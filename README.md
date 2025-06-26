@@ -487,15 +487,15 @@ curl -k --cookie cookies.txt -X POST \
 
 ## Execution instructions
 
-The execution instructions assume that there is a [Verifier backend](https://github.com/grnet/eudi-srv-web-verifier-endpoint-23220-4-kt) running at the `verifier_url` configured in the `wallet_verifier_config.json` configuration file.
+The execution instructions assume that there is a [Verifier backend](https://github.com/grnet/eudi-srv-web-verifier-endpoint-23220-4-kt) running at `VERIFIER_URL`.
 
 The following command runs the happy day presentation flow scenario for a valid vp token.
 
 ```python
-python wallet_verifier.py
+python wallet_verifier.py --verifier-url <VERIFIER_URL>
 ```
 
-Instead if set the `vp_token_valid` configuration flag to False in the `wallet_verifier_config.json` configuration file, the execution runs the presentation flow scenario for a revoked vp token.
+If the `vp_token_valid` configuration flag is instead set to False in the `wallet_verifier_config.json` configuration file, the execution runs the presentation flow scenario for a revoked vp token.
 
 ```json
 {
