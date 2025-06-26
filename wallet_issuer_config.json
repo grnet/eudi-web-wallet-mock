@@ -19,6 +19,14 @@
 		"educational_id_mdoc": {
 			"credential_offer_file": "data/credential_offer_educational_id_mdoc.json",
 			"credential_data_file": "data/credential_data_educational_id.json"
+		},
+		"alliance_id_mdoc": {
+			"credential_offer_file": "data/credential_offer_alliance_id_mdoc.json",
+			"credential_data_file": "data/credential_data_alliance_id.json"
+		},
+		"my_academic_id_mdoc": {
+			"credential_offer_file": "data/credential_offer_my_academic_id_mdoc.json",
+			"credential_data_file": "data/credential_data_my_academic_id.json"
 		}
 	}
 }
